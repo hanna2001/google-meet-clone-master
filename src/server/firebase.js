@@ -1,15 +1,18 @@
 import firebase from "firebase";
 
 var firebaseConfig = {
-  apiKey: "AIzaSyDkvfvBPMaSsN__vjkhg1b07oHaJolZM3I", // Add API Key
-  databaseURL:"https://mainproject-41c84-default-rtdb.asia-southeast1.firebasedatabase.app/" // Add databaseURL
+  apiKey: "AIzaSyBgUF8GEUXOnD_MDGgaNaenZm3A6n5-gLM", // Add API Key
+  databaseURL:
+    "https://test-meet-clone-default-rtdb.asia-southeast1.firebasedatabase.app/", // Add databaseURL
 };
-// Initialize Firebase
+
 firebase.initializeApp(firebaseConfig);
 
 export const db = firebase;
 
 var firepadRef = firebase.database().ref();
+
+export let connectedRef = firebase.database().ref(".info/connected");
 
 export const userName = prompt("What's your name?");
 const urlparams = new URLSearchParams(window.location.search);

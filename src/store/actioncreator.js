@@ -1,5 +1,5 @@
 import {
-  SET_MAIN_STREAM,
+  // SET_MAIN_STREAM,
   ADD_PARTICIPANT,
   SET_USER,
   REMOVE_PARTICIPANT,
@@ -7,14 +7,14 @@ import {
   UPDATE_PARTICIPANT,
 } from "./actiontypes";
 
-export const setMainStream = (stream) => {
-  return {
-    type: SET_MAIN_STREAM,
-    payload: {
-      mainStream: stream,
-    },
-  };
-};
+// export const setMainStream = (stream) => {
+//   return {
+//     type: SET_MAIN_STREAM,
+//     payload: {
+//       mainStream: stream,
+//     },
+//   };
+// };
 
 export const setUser = (user) => {
   return {
@@ -25,11 +25,11 @@ export const setUser = (user) => {
   };
 };
 
-export const addParticipant = (user) => {
+export const addParticipant = (participant) => {
   return {
     type: ADD_PARTICIPANT,
     payload: {
-      newUser: user,
+      participant,
     },
   };
 };
@@ -52,11 +52,11 @@ export const updateParticipant = (user) => {
   };
 };
 
-export const removeParticipant = (userId) => {
+export const removeParticipant = (participantKey) => {
   return {
     type: REMOVE_PARTICIPANT,
     payload: {
-      id: userId,
+      participantKey,
     },
   };
 };

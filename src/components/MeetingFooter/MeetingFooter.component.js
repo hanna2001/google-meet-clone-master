@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "react-router-dom";
 import {
   faMicrophone,
   faVideo,
@@ -34,19 +35,17 @@ const MeetingFooter = (props) => {
   //   });
   // };
 
+  const onEndCall = () => {
+    window.opener = null;
+    window.open("", "_self");
+    window.close();
+    //   setStreamState((currentState) => {
 
-//   const onEndCall = () => {
-//     window.opener = null;
-//     window.open("", "_self");
-//     window.close();
-//   //   setStreamState((currentState) => {
-    
-//   //     return {
-//   //       ...currentState,
-//   //   };
-//   // });
-// };
-
+    //     return {
+    //       ...currentState,
+    //   };
+    // });
+  };
 
   // const onScreenClick = () => {
   //   props.onScreenClick(setScreenState);
@@ -85,6 +84,7 @@ const MeetingFooter = (props) => {
         // onClick={onEndCall}
       >
         <FontAwesomeIcon icon={faPhone} />
+
         {/* <FontAwesomeIcon icon={!streamState.video ? faVideoSlash : faVideo} /> */}
       </div>
       {/* <div

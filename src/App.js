@@ -1,15 +1,18 @@
 import MainScreen from "./components/MainScreen/MainScreen.component";
+
 import firepadRef, { db, userName } from "./server/firebase";
 import "./App.css";
 import { useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import {
-  setMainStream,
+  // setMainStream,
   addParticipant,
   setUser,
   removeParticipant,
   updateParticipant,
 } from "./store/actioncreator";
 import { connect } from "react-redux";
+import { MeetingEnds } from "./components/LastPage/MeetingEnds.component";
 
 function App(props) {
   const getUserStream = async () => {
@@ -20,10 +23,14 @@ function App(props) {
 
     return localStream;
   };
+  const participantRef = firepadRef.child("participants");
+
   useEffect(async () => {
-    const stream = await getUserStream();
-    stream.getVideoTracks()[0].enabled = false;
-    props.setMainStream(stream);
+    //   // const stream = await getUserStream();
+    //   // stream.getVideoTracks()[0].enabled = false;
+    //   // props.setMainStream(stream);
+
+    const connectedRef = db.database().ref(".info/connected");
 
     connectedRef.on("value", (snap) => {
       if (snap.val()) {
@@ -44,42 +51,48 @@ function App(props) {
     });
   }, []);
 
-  const connectedRef = db.database().ref(".info/connected");
-  const participantRef = firepadRef.child("participants");
-
-  const isUserSet = !!props.user;
-  const isStreamSet = !!props.stream;
+  // const isUserSet = !!props.user;
+  // const isStreamSet = !!props.stream;
 
   useEffect(() => {
-    if (isStreamSet && isUserSet) {
-      participantRef.on("child_added", (snap) => {
-        const preferenceUpdateEvent = participantRef
-          .child(snap.key)
-          .child("preferences");
-        preferenceUpdateEvent.on("child_changed", (preferenceSnap) => {
-          props.updateParticipant({
-            [snap.key]: {
-              [preferenceSnap.key]: preferenceSnap.val(),
-            },
-          });
-        });
-        const { userName: name, preferences = {} } = snap.val();
-        props.addParticipant({
-          [snap.key]: {
-            name,
-            ...preferences,
-          },
-        });
+    // if (isStreamSet && isUserSet) {
+    participantRef.on("child_added", (snap) => {
+      // const preferenceUpdateEvent = participantRef
+      //   .child(snap.key)
+      //   .child("preferences");
+      // preferenceUpdateEvent.on("child_changed", (preferenceSnap) => {
+      //   props.updateParticipant({
+      //     [snap.key]: {
+      //       [preferenceSnap.key]: preferenceSnap.val(),
+      //     },
+      //   });
+      // });
+      const { userName: name, preferences = {} } = snap.val();
+      props.addParticipant({
+        [snap.key]: {
+          name,
+          ...preferences,
+        },
       });
-      participantRef.on("child_removed", (snap) => {
-        props.removeParticipant(snap.key);
-      });
-    }
-  }, [isStreamSet, isUserSet]);
+    });
+    participantRef.on("child_removed", (snap) => {
+      props.removeParticipant(snap.key);
+    });
+    // }
+  }, [props.user]); //isStreamSet, isUserSet
 
   return (
     <div className="App">
-      <MainScreen />
+      Current User: {JSON.stringify(props.user)} <br />
+      Participants: {JSON.stringify(props.participants)}
+      {/* <MainScreen /> */}
+      {/* <Router>
+        <Routes>
+          <Route exact path="/" component={MainScreen} />
+
+          <Route path="/ended" component={MeetingEnds} />
+        </Routes>
+      </Router> */}
     </div>
   );
 }
@@ -88,12 +101,13 @@ const mapStateToProps = (state) => {
   return {
     stream: state.mainStream,
     user: state.currentUser,
+    participants: state.participants,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setMainStream: (stream) => dispatch(setMainStream(stream)),
+    // setMainStream: (stream) => dispatch(setMainStream(stream)),
     addParticipant: (user) => dispatch(addParticipant(user)),
     setUser: (user) => dispatch(setUser(user)),
     removeParticipant: (userId) => dispatch(removeParticipant(userId)),

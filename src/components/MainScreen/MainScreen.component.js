@@ -3,8 +3,8 @@ import MeetingFooter from "../MeetingFooter/MeetingFooter.component";
 import Participants from "../Participants/Participants.component";
 import "./MainScreen.css";
 import { connect } from "react-redux";
-import { setMainStream, updateUser } from "../../store/actioncreator";
-
+// import { setMainStream, updateUser } from "../../store/actioncreator";
+import { updateUser } from "../../store/actioncreator";
 const MainScreen = (props) => {
   const participantRef = useRef(props.participants);
 
@@ -99,7 +99,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setMainStream: (stream) => dispatch(setMainStream(stream)),
+    // setMainStream: (stream) => dispatch(setMainStream(stream)),
     updateUser: (user) => dispatch(updateUser(user)),
   };
 };
