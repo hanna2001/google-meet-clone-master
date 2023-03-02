@@ -24,7 +24,7 @@ function App(props) {
           screen: false,
         };
         const userStatusRef = participantRef.push({
-          userName,
+          userName: userName,
           preferences: defaultPreference,
         });
         props.setUser({
