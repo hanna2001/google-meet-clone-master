@@ -19,6 +19,9 @@ export const reducer = (state = initialState, action) => {
       if (currentUserId === participantId) {
         payload.participant[participantId].currentUser = true;
       }
+      payload.participant[participantId].avatarColor = `#${Math.floor(
+        Math.random() * 16777215
+      ).toString(16)}`;
       let participants = { ...state.participants, ...payload.participant };
 
       state = { ...state, participants };
